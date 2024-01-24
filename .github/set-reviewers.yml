@@ -1,0 +1,23 @@
+name: Auto Reviewers Assign
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    types: [opened, ready_for_review, reopened]
+
+jobs:
+  assign-reviews:
+    name: Reviewers
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    
+    steps:
+    - uses: actions/checkout@v1
+    - uses: uesteibar/reviewer-lottery@v3
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
